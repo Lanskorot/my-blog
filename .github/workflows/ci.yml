@@ -24,6 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug environment variables
+        run: |
+          echo "MAIL_USERNAME is set: ${{ secrets.MAIL_USERNAME != '' }}"
+          echo "MAIL_PASSWORD is set: ${{ secrets.MAIL_PASSWORD != '' }}"
+
       - name: Run tests with pytest
         env:
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
