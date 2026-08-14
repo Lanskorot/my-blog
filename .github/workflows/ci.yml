@@ -25,5 +25,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests with pytest
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          ADMIN_MAIL: ${{ secrets.ADMIN_MAIL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           pytest -v
