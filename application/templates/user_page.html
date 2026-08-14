@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Страница пользователя {{ user[1] }}
+{% endblock %}
+
+{% block body %}
+    <!-- Информация о пользователе -->
+    <div class="user-profile-header">
+        <h1>👤 {{ user[1] }}</h1>
+        <div class="user-meta">
+            <span>📧 {{ user[2] }}</span>
+            <span>📅 Зарегистрирован: {{ user[3]|datetime if user[3] else 'Неизвестно' }}</span>
+            <span>📝 Постов: {{ posts|length }}</span>
+        </div>
+    </div>
+
+    <!-- Посты пользователя -->
+    <h2>📝 Посты пользователя</h2>
+    
+    {% if posts %}
+        <ul class='posts'>
+            {% for post in posts %}
+                <li>
+                    <a href="{{ url_for('post.show_post', post_id=post[0]) }}">{{ post[1] }}</a>
+                    <p>{{ post[2][:150] }}{% if post[2]|length > 150 %}...{% endif %}</p>
+                    <p><em>Создан: {{ post[4]|datetime if post[4] else 'Неизвестно' }}</em></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="empty-state">
+            <p>📭 У пользователя пока нет постов</p>
+        </div>
+    {% endif %}
+
+    <!-- Кнопка "На главную" -->
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ url_for('main.index') }}">
+            <button class="btn-primary" style="padding: 10px 30px; border-radius: 10px; border: none; background: #2563eb; color: white; font-size: 1rem; cursor: pointer; transition: 0.2s;">
+                🏠 На главную
+            </button>
+        </a>
+    </div>
+{% endblock %}

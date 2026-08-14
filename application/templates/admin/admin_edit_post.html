@@ -1,0 +1,39 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+    Редактирование поста 
+{% endblock %}
+
+{% block body %}
+    <h1>Редактирование поста</h1>
+    <p><strong>Редактирований:</strong> {{ edit_count }}</p>
+    <form action="/admin/posts/edit/{{post[0]}}" method='POST' class="edit-post-form">
+        <div class="form-group">
+            <label for="title" class="required">Заголовок</label>
+            <input type="text" id="title" name="title" value="{{ post[1] }}" required class="form-control">
+            <span class="help-text">Введите заголовок поста</span>
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="content" class="required">Содержание</label>
+            <textarea name="content" id="content" rows='15' required class="form-control">{{post[2]}}</textarea>
+            <span class="help-text">Основное содержание поста</span>
+        </div>
+        
+        <div class="form-actions">
+            <button type='submit' class="btn-save">Сохранить изменения</button>
+            <a href="{{ url_for('admin.admin_posts') }}" class="btn-cancel"><button type="button">Отмена</button></a>
+        </div>
+    </form>
+    
+    <div class="post-info">
+        <p><strong>Информация о посте</strong></p>
+        <ul>
+            <li><strong>ID:</strong> {{post[0]}}</li>
+            <li><strong>Автор:</strong> {{post[3]}}</li>
+            <li><strong>Создан:</strong> {{post[5]}}</li>
+            <li><strong>Текущая категория:</strong> {{ post[6] if post[6] else 'Без категории' }}</li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block body %}
+    <h1>📊 Активность пользователей</h1>
+    
+    <!-- Статистика -->
+    <div class="stats-header">
+        <p class="stats-count">
+            <span class="count-number">{{ active_count }}</span>
+            <span class="count-label">пользователей сейчас на сайте</span>
+        </p>
+    </div>
+
+    <!-- Активные пользователи -->
+    {% if active_users %}
+        <div class="users-section">
+            <h3>👥 Активные пользователи</h3>
+            <ul class="users-list" style="justify-content: center;">
+                {% for name in active_users %}
+                    <li><span class="user-badge">{{ name }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span class="icon">😴</span>
+            <p>Никто не активен</p>
+        </div>
+    {% endif %}
+
+    <!-- Активные сессии -->
+    {% if active_token_users %}
+        <div class="users-section">
+            <h3>🔐 Активные сессии</h3>
+            <ul class="users-list">
+                {% for user in active_token_users %}
+                    <li>
+                        <div class="user-info">
+                            <span class="user-name">{{ user.name }}</span>
+                            <span class="token-expires">
+                                Токен истекает:
+                                <span class="{% if user.expires_at_raw < now %}expired{% else %}valid{% endif %}">
+                                    {{ user.expires_at_str }}
+                                </span>
+                            </span>
+                        </div>
+                        <form action="{{ url_for('auth.logout') }}" method="POST" class="delete-form">
+                            <input type="hidden" name="user_token" value="{{ user.token }}">
+                            <input type="submit" value="🚫 Закрыть сессию" class="btn-danger">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span class="icon">🔓</span>
+            <p>Нет активных сессий</p>
+        </div>
+    {% endif %}
+
+    <!-- Кнопка "Назад" -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('main.profile') }}">
+            <button class="btn-primary" style="padding: 10px 30px; border-radius: 10px; border: none; background: #64748b; color: white; font-size: 1rem; cursor: pointer; transition: 0.2s;">
+                ⬅️ Назад
+            </button>
+        </a>
+    </div>
+{% endblock %}

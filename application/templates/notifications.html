@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Уведомления администратора
+{% endblock %}
+
+{% block body %}
+    <h1>📋 Уведомления</h1>
+    
+    <p style="text-align: center; color: #64748b; margin-bottom: 30px;">
+        Панель администратора – просмотр всех действий пользователей
+    </p>
+
+    {% if notifications %}
+        <!-- Статистика -->
+        <div class="notifications-stats" style="text-align: center; margin-bottom: 20px;">
+            <span style="font-size: 1.1rem; color: #1e293b;">
+                📊 Всего уведомлений: <strong style="color: #2563eb;">{{ notifications|length }}</strong>
+            </span>
+        </div>
+
+        <!-- Список уведомлений -->
+        <ul class="logging" style="list-style: none; padding: 0; max-width: 900px; margin: 0 auto;">
+            {% for note in notifications %}
+                <li class="notification-item">
+                    <div class="notification-content">
+                        <p>
+                            <span class="notification-icon">📌</span>
+                            <strong>{{ note[1] or 'Неизвестный пользователь' }}</strong>
+                            — {{ note[2] }}
+                        </p>
+                        <p class="notification-details">{{ note[3] }}</p>
+                        <em class="notification-date">{{ note[4]|datetime if note[4] else 'Неизвестно' }}</em>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Кнопка "Назад" -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{{ url_for('main.profile') }}" class="btn-secondary" style="display: inline-block; padding: 10px 30px; text-decoration: none; border: 1px solid #e2e8f0; border-radius: 10px; color: #1e293b; background: white; transition: 0.2s;">
+                ⬅ Назад в профиль
+            </a>
+        </div>
+    {% else %}
+        <!-- Пустое состояние -->
+        <div class="empty-state">
+            <span class="icon">🔔</span>
+            <p style="font-size: 1.2rem;">Пока нет уведомлений</p>
+            <a href="{{ url_for('main.profile') }}" class="btn-primary" style="display: inline-block; margin-top: 15px; text-decoration: none; padding: 10px 30px; border-radius: 10px; background: #2563eb; color: white; transition: 0.2s;">
+                ⬅ Вернуться в профиль
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

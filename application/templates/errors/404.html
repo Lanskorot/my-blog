@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Страница не найдена
+{% endblock %}
+
+{% block body %}
+    <div class="error">
+        <!-- Иконка -->
+        <div class="error-icon">🔍</div>
+        
+        <!-- Заголовок -->
+        <h1>404</h1>
+        <h2>Страница не найдена</h2>
+        
+        <!-- Сообщение -->
+        <p class="error-message">Упс! Страница, которую вы ищете, не существует.</p>
+        <p class="error-message">Возможно, она была перемещена или удалена.</p>
+        
+        <!-- Поиск -->
+        <div class="error-search">
+            <form action="{{ url_for('post.search') }}" method="GET">
+                <input type="text" name="q" placeholder="Поиск по сайту..." class="search-input">
+                <button type="submit" class="btn-primary">🔍 Найти</button>
+            </form>
+        </div>
+        
+        <!-- Кнопка "На главную" -->
+        <div style="margin-top: 15px;">
+            <a href="{{ url_for('main.index') }}" class="btn-primary">🏠 Вернуться на главную</a>
+        </div>
+        
+        <!-- Популярные разделы -->
+        <div class="error-links">
+            <p>Возможно, вас заинтересует:</p>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">🏠 Главная</a></li>
+                <li><a href="{{ url_for('post.add_post') }}">📝 Создать пост</a></li>
+                <li><a href="{{ url_for('main.users_info') }}">👥 Пользователи</a></li>
+                <li><a href="{{ url_for('main.profile') }}">👤 Профиль</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

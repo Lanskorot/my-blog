@@ -1,0 +1,91 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+    Админ панель
+{% endblock %}
+
+{% block body %}
+    <div class="dashboard-header">
+        <h1>🛠️ Админ панель</h1>
+        <p>Вы вошли как: <strong>{{ user_name }}</strong> (администратор)</p>
+    </div>
+    
+    <!-- Статистика -->
+    <h2>📊 Основная статистика</h2>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>👥 Пользователей</h3>
+            <p>{{ stats.user_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>📝 Постов</h3>
+            <p>{{ stats.post_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>📂 Категорий</h3>
+            <p>{{ stats.category_count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>🔔 Уведомлений</h3>
+            <p>{{ stats.logging_count }}</p>
+        </div>
+    </div>
+    
+    <!-- Распределение постов по категориям -->
+    <h2>📂 Распределение постов по категориям</h2>
+    {% if stats.posts_by_category %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Категория</th>
+                    <th>Количество постов</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in stats.posts_by_category %}
+                    <tr>
+                        <td>{{ category[0] if category[0] else 'Без категории' }}</td>
+                        <td>{{ category[1] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <p>📭 Нет данных о категориях</p>
+        </div>
+    {% endif %}
+    
+    <!-- Активные пользователи -->
+    <h2>👑 Активные пользователи (последние 30 дней)</h2>
+    {% if stats.active_users %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Количество постов</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in stats.active_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[1] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <p>👤 Нет активных пользователей за последние 30 дней</p>
+        </div>
+    {% endif %}
+    
+    <!-- Быстрые ссылки -->
+    <h2>🔗 Быстрые ссылки</h2>
+    <div class="quick-links">
+        <a href="{{ url_for('admin.admin_users') }}" class="btn-primary">👥 Управление пользователями</a>
+        <a href="{{ url_for('admin.admin_posts') }}" class="btn-primary">📝 Управление постами</a>
+        <a href="{{ url_for('admin.admin_dashboard') }}" class="btn-secondary">🏠 Вернуться на главную</a>
+    </div>
+{% endblock %}

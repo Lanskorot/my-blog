@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавить пост
+{% endblock %}
+
+{% block body %}
+    <h1>📝 Добавить новый пост</h1>
+
+    <form action="{{ url_for('post.add_post') }}" method='POST' class="new-post-form">
+        <!-- Заголовок -->
+        <div class="form-group">
+            <label for="title" class="required">Заголовок:</label>
+            <input type="text" id="title" name="title" 
+                   value="{{ form_data.title if form_data else '' }}" 
+                   placeholder="Введите заголовок поста" required>
+            {% if errors and errors.title %}
+                <span class="error-message">{{ errors.title[0] }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Категории -->
+        <div class="form-group">
+            <label for="category" class="required">Категории:</label>
+            <select id="category" name="categories" multiple size="5" required>
+                {% for category in categories %}
+                    <option value="{{ category[0] }}" 
+                        {% if form_data and form_data.categories and category[0]|string in form_data.categories %}selected{% endif %}>
+                        {{ category[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="category-counter">
+                Выбрано: <span id="category-count">0</span> категорий
+            </div>
+            <small class="help-text">
+                💡 Удерживайте <kbd>Ctrl</kbd> (или <kbd>Cmd</kbd> на Mac) для выбора нескольких категорий
+            </small>
+            {% if errors and errors.categories %}
+                <span class="error-message">{{ errors.categories[0] }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Содержимое -->
+        <div class="form-group">
+            <label for="content" class="required">Содержимое:</label>
+            <textarea id="content" name="content" 
+                      placeholder="Введите содержимое поста" 
+                      required>{{ form_data.content if form_data else '' }}</textarea>
+            {% if errors and errors.content %}
+                <span class="error-message">{{ errors.content[0] }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Кнопки -->
+        <div class="form-actions">
+            <button type="submit" class="btn-save">✅ Добавить пост</button>
+            <a href="{{ url_for('main.index') }}" class="btn-cancel">⬅ На главную</a>
+        </div>
+    </form>
+
+    <script>
+        // Подсчёт выбранных категорий
+        const select = document.getElementById('category');
+        const counter = document.getElementById('category-count');
+        
+        if (select && counter) {
+            // Обновляем при загрузке
+            counter.textContent = select.selectedOptions.length;
+            
+            // Обновляем при изменении
+            select.addEventListener('change', function() {
+                counter.textContent = this.selectedOptions.length;
+            });
+        }
+    </script>
+{% endblock %}

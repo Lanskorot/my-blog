@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Количество постов пользователей
+{% endblock %}
+
+{% block body %}
+    <h3>📊 Количество постов у пользователей</h3>
+    
+    <div class="users-section">
+        {% if users %}
+            <ul class='users-list'>
+                {% for user in users %}
+                    <li>
+                        <div class="user-stats">
+                            <span class="user-name">👤 {{ user[0] }}</span>
+                            <span class="post-count">📝 {{ user[1] }} пост{{ user[1]|pluralize }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <div style="margin-top: 20px; text-align: center; color: #64748b; font-size: 0.9rem;">
+                Всего пользователей: {{ users|length }}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>😕 Пользователей пока нет</p>
+                <p><a href="{{ url_for('auth.register') }}">Зарегистрируйтесь первым</a></p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

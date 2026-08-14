@@ -1,0 +1,18 @@
+<!-- _post_item.html -->
+<li class="post-item-compact">
+    <h3 class="post-title">
+        <a href="{{ url_for('post.show_post', post_id=post[0]) }}">{{ post[1] }}</a>
+    </h3>
+    
+    <div class="post-preview">
+        <p>{{ post[2][:200] }}{% if post[2]|length > 200 %}...{% endif %}</p>
+    </div>
+    
+    <div class="post-meta">
+        <span>✍️ Автор: <strong>{{ post[5] if post[5] else 'Неизвестно' }}</strong></span>
+        {% if post[6] %}
+            <span>📂 Категория: <strong>{{ post[6] }}</strong></span>
+        {% endif %}
+        <span>📅 Создан: <strong>{{ post[4]|datetime if post[4] else 'Неизвестно' }}</strong></span>
+    </div>
+</li>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ title or 'Ошибка' }}
+{% endblock %}
+
+{% block body %}
+    <div class="error">
+        <!-- Иконка в зависимости от кода ошибки -->
+        {% if error_code == 404 %}
+            <div class="error-icon">🔍</div>
+        {% elif error_code == 403 %}
+            <div class="error-icon">🚫</div>
+        {% elif error_code == 401 %}
+            <div class="error-icon">🔒</div>
+        {% elif error_code == 500 %}
+            <div class="error-icon">💥</div>
+        {% else %}
+            <div class="error-icon">😕</div>
+        {% endif %}
+        
+        <!-- Заголовок ошибки -->
+        <h1>
+            {% if error_code %}
+                {{ error_code }}
+            {% else %}
+                Ошибка
+            {% endif %}
+        </h1>
+        
+        <!-- Сообщение об ошибке -->
+        <p>{{ error_message or 'Произошла непредвиденная ошибка.' }}</p>
+        
+        <!-- Кнопка "На главную" -->
+        <a href="{{ url_for('main.index') }}" class="btn-primary">🏠 Вернуться на главную</a>
+        
+        <!-- Дополнительная информация для разработчика (только в режиме отладки) -->
+        {% if current_app.debug and error_code == 500 and error_traceback %}
+            <div class="error-details">
+                <p><strong>🐛 Информация для разработчика:</strong></p>
+                <pre>{{ error_traceback }}</pre>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

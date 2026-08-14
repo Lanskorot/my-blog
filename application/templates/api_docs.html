@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документация API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 20px;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+        
+        nav {
+            background: #f1f5f9;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        nav a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .endpoint {
+            background: #f8fafc;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            border-left-width: 4px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+        
+        .get { background: #22c55e; }
+        .post { background: #3b82f6; }
+        .put { background: #eab308; color: #1e293b; }
+        .delete { background: #ef4444; }
+        
+        code {
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow: auto;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .badge.auth { background: #3b82f6; color: white; }
+        .badge.admin { background: #ef4444; color: white; }
+        .badge.public { background: #22c55e; color: white; }
+        
+        .auth-box {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        
+        .auth-box code {
+            background: #fde68a;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+        
+        .tester {
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .tester input,
+        .tester select,
+        .tester button {
+            margin: 5px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .tester button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .tester button:hover {
+            background: #1d4ed8;
+        }
+        
+        .response {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: auto;
+            max-height: 400px;
+        }
+        
+        .response pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .status-codes {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .status-codes th,
+        .status-codes td {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        
+        .status-codes th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        
+        .status-codes tr:hover {
+            background: #f1f5f9;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tester input,
+            .tester select,
+            .tester button {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .tester textarea {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Документация API</h1>
+        
+        <nav>
+            <a href="{{ url_for('main.index') }}">🏠 На главную</a> |
+            {% if user_name %}
+                <span>👤 Вы вошли как: <strong>{{ user_name }}</strong></span> |
+                <a href="{{ url_for('auth.logout') }}">🚪 Выйти</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">🔑 Вход</a> |
+                <a href="{{ url_for('auth.register') }}">📝 Регистрация</a>
+            {% endif %}
+        </nav>
+        
+        <hr style="margin: 20px 0; border-color: #e2e8f0;">
+        
+        <h2>🔷 Базовый URL</h2>
+        <p><code>http://ваш-домен/api/v1/</code></p>
+        
+        <div class="auth-box">
+            <strong>🔐 Аутентификация</strong>
+            <p style="margin-top: 8px;">
+                Для защищённых эндпоинтов используйте Bearer токен в заголовке:
+            </p>
+            <code>Authorization: Bearer ваш_токен</code>
+            <p style="margin-top: 8px; font-size: 0.9rem; color: #64748b;">
+                Токен получается при входе через <code>/api/v1/login</code>
+            </p>
+        </div>
+        
+        <h2>🔷 Аутентификация</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> <code>/api/v1/login</code> <span class="badge public">Публичный</span></h3>
+            <p>Вход в систему и получение токена доступа.</p>
+            <p><strong>Тело запроса (JSON):</strong></p>
+            <pre>{
+    "email": "user@example.com",
+    "password": "password123"
+}</pre>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "message": "Вход выполнен успешно",
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "Андрей",
+            "email": "user@example.com",
+            "role": "admin"
+        },
+        "token": "a1b2c3d4e5f6...",
+        "expires_in": 1734567890.123
+    }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> <code>/api/v1/logout</code> <span class="badge auth">Требует токен</span></h3>
+            <p>Выход из системы (удаление токена).</p>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "message": "Выход выполнен успешно"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> <code>/api/v1/me</code> <span class="badge auth">Требует токен</span></h3>
+            <p>Получение информации о текущем пользователе.</p>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "Андрей",
+        "email": "user@example.com",
+        "role": "admin",
+        "last_login": "2026-08-13 16:00:22"
+    }
+}</pre>
+        </div>
+
+        <h2>📝 Посты</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> <code>/api/v1/posts</code> <span class="badge public">Публичный</span></h3>
+            <p>Получение списка постов с пагинацией и фильтрацией.</p>
+            <p><strong>Параметры запроса:</strong></p>
+            <table class="status-codes">
+                <tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr>
+                <tr><td>page</td><td>integer</td><td>Номер страницы (по умолчанию 1)</td></tr>
+                <tr><td>per_page</td><td>integer</td><td>Количество постов на странице (по умолчанию 5)</td></tr>
+            </table>
+            <p><strong>Пример:</strong> <code>/api/v1/posts?page=2&per_page=10</code></p>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "title": "Мой первый пост",
+            "content": "Полный текст поста...",
+            "author_id": 1,
+            "created_at": "2026-08-13 16:00:22",
+            "author": "Андрей",
+            "category": "Технологии"
+        }
+    ],
+    "pagination": {
+        "page": 1,
+        "per_page": 5,
+        "total": 12,
+        "total_pages": 3
+    }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> <code>/api/v1/posts/{id}</code> <span class="badge public">Публичный</span></h3>
+            <p>Получение конкретного поста по ID.</p>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "data": {
+        "id": 1,
+        "title": "Мой первый пост",
+        "content": "Полный текст поста...",
+        "author_id": 1,
+        "author_name": "Андрей",
+        "category_name": "Технологии",
+        "created_at": "2026-08-13 16:00:22"
+    }
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> <code>/api/v1/posts</code> <span class="badge auth">Требует токен</span></h3>
+            <p>Создание нового поста.</p>
+            <p><strong>Тело запроса (JSON):</strong></p>
+            <pre>{
+    "title": "Заголовок поста",
+    "content": "Содержание поста...",
+    "category_id": 1
+}</pre>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "data": {
+        "id": 10,
+        "title": "Заголовок поста",
+        "content": "Содержание поста...",
+        "category_id": 1,
+        "author_id": 1
+    },
+    "message": "Пост успешно создан"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method put">PUT</span> <code>/api/v1/posts/{id}</code> <span class="badge auth">Требует токен</span></h3>
+            <p>Обновление поста (автор или администратор).</p>
+            <p><strong>Тело запроса (JSON):</strong></p>
+            <pre>{
+    "title": "Новый заголовок",
+    "content": "Новое содержание...",
+    "category_id": 2
+}</pre>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "data": {
+        "id": 10,
+        "title": "Новый заголовок",
+        "content": "Новое содержание...",
+        "category_id": 2
+    },
+    "message": "Пост успешно обновлён"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method delete">DELETE</span> <code>/api/v1/posts/{id}</code> <span class="badge admin">Только админ</span></h3>
+            <p>Удаление поста (только для администраторов).</p>
+            <p><strong>Ответ:</strong></p>
+            <pre>{
+    "success": true,
+    "message": "Пост успешно удалён"
+}</pre>
+        </div>
+
+        <h2>📋 Коды ответов</h2>
+        <table class="status-codes">
+            <tr>
+                <th>Код</th>
+                <th>Описание</th>
+            </tr>
+            <tr><td>200</td><td>✅ Успешный запрос</td></tr>
+            <tr><td>201</td><td>✅ Успешно создан</td></tr>
+            <tr><td>400</td><td>❌ Ошибка в запросе</td></tr>
+            <tr><td>401</td><td>🔒 Требуется аутентификация</td></tr>
+            <tr><td>403</td><td>🚫 Недостаточно прав</td></tr>
+            <tr><td>404</td><td>🔍 Ресурс не найден</td></tr>
+            <tr><td>500</td><td>💥 Внутренняя ошибка сервера</td></tr>
+        </table>
+
+        <h2>💻 Пример использования с JavaScript (Fetch API)</h2>
+        <pre>// Получение постов
+fetch('/api/v1/posts')
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+// Вход в систему
+fetch('/api/v1/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        email: 'user@example.com',
+        password: 'password123'
+    })
+})
+.then(response => response.json())
+.then(data => {
+    const token = data.data.token;
+    console.log('Токен:', token);
+});
+
+// Создание поста
+fetch('/api/v1/posts', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ваш_токен'
+    },
+    body: JSON.stringify({
+        title: 'Новый пост',
+        content: 'Содержание...',
+        category_id: 1
+    })
+})
+.then(response => response.json())
+.then(data => console.log(data));</pre>
+
+        <hr style="margin: 30px 0; border-color: #e2e8f0;">
+
+        <div class="tester">
+            <h2>🛠 Тестер API</h2>
+            <p>Отправляйте запросы прямо отсюда:</p>
+            <div>
+                <select id="method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <input type="text" id="url" placeholder="/api/v1/posts или полный URL" size="50" value="/api/v1/posts">
+                <br><br>
+                <label>🔑 Токен (Bearer):</label>
+                <input type="text" id="token" placeholder="вставьте токен" size="40">
+                <br><br>
+                <div id="body-container" style="display: none;">
+                    <label>📝 Тело запроса (JSON):</label><br>
+                    <textarea id="body" rows="6" cols="60" style="width: 100%; max-width: 600px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                    <button onclick="sendRequest()">🚀 Отправить запрос</button>
+                    <button onclick="clearResponse()">🗑️ Очистить</button>
+                    <button onclick="fillExample()">📝 Заполнить пример</button>
+                </div>
+            </div>
+            <div class="response" id="response">
+                <pre>Ответ появится здесь...</pre>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: #64748b; font-size: 0.9rem; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+            <p>📘 Документация API v1.0.0</p>
+            <p>Последнее обновление: Август 2026</p>
+        </div>
+    </div>
+
+    <script>
+        // Показывать/скрывать поле тела запроса
+        document.getElementById('method').addEventListener('change', function() {
+            const method = this.value;
+            const bodyContainer = document.getElementById('body-container');
+            bodyContainer.style.display = (method === 'POST' || method === 'PUT') ? 'block' : 'none';
+        });
+
+        function fillExample() {
+            document.getElementById('method').value = 'POST';
+            document.getElementById('url').value = '/api/v1/posts';
+            document.getElementById('body').value = JSON.stringify({
+                title: 'Пример поста',
+                content: 'Это содержимое примера поста для тестирования API...',
+                category_id: 1
+            }, null, 2);
+            document.getElementById('method').dispatchEvent(new Event('change'));
+        }
+
+        async function sendRequest() {
+            const method = document.getElementById('method').value;
+            const url = document.getElementById('url').value;
+            const token = document.getElementById('token').value;
+            const bodyText = document.getElementById('body').value;
+            
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (token) {
+                headers['Authorization'] = 'Bearer ' + token;
+            }
+            
+            const options = {
+                method: method,
+                headers: headers
+            };
+            
+            if (method === 'POST' || method === 'PUT') {
+                options.body = bodyText;
+            }
+            
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = '<pre>⏳ Загрузка...</pre>';
+            
+            try {
+                const response = await fetch(url, options);
+                const contentType = response.headers.get('content-type');
+                let data;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+                
+                responseDiv.innerHTML = `
+                    <pre>📊 Статус: ${response.status} ${response.statusText}\n\n${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <pre style="color: #ef4444;">❌ Ошибка: ${error.message}</pre>
+                `;
+            }
+        }
+
+        function clearResponse() {
+            document.getElementById('response').innerHTML = '<pre>Ответ появится здесь...</pre>';
+        }
+    </script>
+</body>
+</html>

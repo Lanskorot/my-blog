@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Редактирование поста
+{% endblock %}
+
+{% block body %}
+    <h1>✏️ Редактирование поста</h1>
+
+    <!-- Информация о посте -->
+    <div class="post-info">
+        <p><strong>📋 Информация о посте</strong></p>
+        <ul>
+            <li><strong>ID:</strong> {{ post[0] }}</li>
+            <li><strong>Автор:</strong> {{ post[5] if post[5] else 'Неизвестно' }}</li>
+            <li><strong>Создан:</strong> {{ post[4]|datetime if post[4] else 'Неизвестно' }}</li>
+        </ul>
+    </div>
+
+    <!-- Форма редактирования -->
+    <form method="POST" action="{{ url_for('post.edit_post', post_id=post[0]) }}" class="edit-post-form">
+        <div class="form-group">
+            <label for="title" class="required">Заголовок:</label>
+            <input type="text" id="title" name="title" required value="{{ post[1] }}">
+        </div>
+
+        <div class="form-group">
+            <label for="content" class="required">Содержимое:</label>
+            <textarea id="content" name="content" required>{{ post[2] }}</textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">💾 Сохранить изменения</button>
+            <a href="{{ url_for('main.profile') }}" class="btn-cancel">❌ Отмена</a>
+        </div>
+    </form>
+{% endblock %}

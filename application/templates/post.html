@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ post[1] if post else 'Пост' }}
+{% endblock %}
+
+{% block body %}
+    {% if post %}
+        <div class="post-content">
+            <!-- Заголовок -->
+            <h2>{{ post[1] }}</h2>
+            
+            <!-- Содержимое -->
+            <div class="post-body">
+                <p>{{ post[2] }}</p>
+            </div>
+            
+            <!-- Информация о посте -->
+            <div class="post-meta">
+                <span>✍️ Автор: 
+                    <a href="{{ url_for('main.user_page', user_id=post[3]) }}">
+                        <strong>{{ post[5] if post[5] else 'Неизвестно' }}</strong>
+                    </a>
+                </span>
+                <span>📂 Категории: 
+                    <strong>{{ post[6] if post[6] else 'без категорий' }}</strong>
+                </span>
+                <span>📅 Создан: 
+                    <strong>{{ post[4]|datetime if post[4] else 'Неизвестно' }}</strong>
+                </span>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>📭 Пост не найден</p>
+            <a href="{{ url_for('main.index') }}" class="btn-primary" style="display: inline-block; margin-top: 10px; text-decoration: none;">
+                🏠 На главную
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Кнопка "На главную" -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('main.index') }}">
+            <button class="btn-secondary" style="padding: 10px 30px; border-radius: 10px; border: 1px solid #e2e8f0; background: white; color: #1e293b; font-size: 1rem; cursor: pointer; transition: 0.2s;">
+                🏠 На главную
+            </button>
+        </a>
+    </div>
+{% endblock %}

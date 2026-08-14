@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Ошибка отладки
+{% endblock %}
+
+{% block body %}
+    <div class="error">
+        <!-- Заголовок -->
+        <div class="error-header">
+            <span class="error-icon">🐛</span>
+            <h1>Произошла ошибка</h1>
+        </div>
+        
+        <!-- Тип и сообщение ошибки -->
+        <div class="error-type">
+            <span class="error-badge">{{ error_type or 'Ошибка' }}</span>
+            <p class="error-message">{{ error_message or 'Неизвестная ошибка' }}</p>
+        </div>
+        
+        <!-- Детали для разработчика -->
+        {% if error_traceback %}
+            <details class="error-details">
+                <summary>
+                    <span>📋</span> Информация для разработчика
+                    <span class="summary-badge">нажмите для раскрытия</span>
+                </summary>
+                <div class="traceback-container">
+                    <pre>{{ error_traceback }}</pre>
+                    <div class="traceback-info">
+                        <span>📅 Время: {{ now|datetime if now else 'Неизвестно' }}</span>
+                        <span>🔗 URL: {{ request.url }}</span>
+                        <span>🌐 IP: {{ request.remote_addr }}</span>
+                        <span>📌 Метод: {{ request.method }}</span>
+                    </div>
+                </div>
+            </details>
+        {% else %}
+            <p style="color: #94a3b8; text-align: center; padding: 20px;">
+                ℹ️ Нет дополнительной информации об ошибке
+            </p>
+        {% endif %}
+        
+        <!-- Кнопка "На главную" -->
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('main.index') }}" class="btn-primary">🏠 Вернуться на главную</a>
+        </div>
+    </div>
+{% endblock %}

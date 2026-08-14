@@ -1,0 +1,234 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+    Просмотр логов
+{% endblock %}
+
+{% block body %}
+    <div style="max-width: 1600px; margin: 0 auto; padding: 20px;">
+        <h1>📋 Логи приложения</h1>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span style="font-size: 1.1rem; color: #475569;">
+                    Последние {{ total_lines }} записей
+                </span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="window.location.reload()" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+                    🔄 Обновить
+                </button>
+                <button onclick="clearLogs()" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+                    🗑️ Очистить логи
+                </button>
+            </div>
+        </div>
+        
+        <!-- Фильтры по уровню -->
+        <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="filterLogs('all')" class="filter-btn active" data-filter="all" style="background: #64748b; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer;">
+                Все
+            </button>
+            <button onclick="filterLogs('INFO')" class="filter-btn" data-filter="INFO" style="background: #22c55e; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer;">
+                INFO
+            </button>
+            <button onclick="filterLogs('WARNING')" class="filter-btn" data-filter="WARNING" style="background: #eab308; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer;">
+                WARNING
+            </button>
+            <button onclick="filterLogs('ERROR')" class="filter-btn" data-filter="ERROR" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer;">
+                ERROR
+            </button>
+            <button onclick="filterLogs('DEBUG')" class="filter-btn" data-filter="DEBUG" style="background: #8b5cf6; color: white; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer;">
+                DEBUG
+            </button>
+        </div>
+        
+        <!-- Контейнер с логами -->
+        <div id="logs-container" style="background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 20px; font-family: 'Courier New', monospace; font-size: 0.85rem; max-height: 800px; overflow-y: auto;">
+            {% if logs %}
+                {% for log in logs %}
+                    <div class="log-entry" style="padding: 4px 0; border-bottom: 1px solid #334155; display: flex; align-items: flex-start; gap: 10px;">
+                        <!-- Индикатор уровня -->
+                        <span class="log-level" style="flex-shrink: 0; width: 12px; height: 12px; border-radius: 50%; margin-top: 6px;">
+                        </span>
+                        <!-- Содержимое лога -->
+                        <div class="log-content" style="flex: 1; min-width: 0;">
+                            <div class="log-text" style="max-height: 60px; overflow: hidden; word-wrap: break-word; cursor: pointer; transition: max-height 0.3s ease;" onclick="toggleLog(this)">
+                                {{ log }}
+                            </div>
+                            <button class="toggle-btn" onclick="toggleLog(this.parentElement.querySelector('.log-text'))" 
+                                    style="background: none; border: none; color: #64748b; cursor: pointer; font-size: 0.75rem; padding: 2px 8px; margin-top: 2px;">
+                                Показать всё ▾
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="color: #94a3b8; text-align: center; padding: 40px;">
+                    <p>📭 Логов пока нет</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Информация о логах -->
+        <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span style="font-weight: 600;">📊 Статистика:</span>
+                <span style="margin-left: 10px; color: #64748b;">
+                    Всего записей: {{ total_lines }}
+                </span>
+            </div>
+            <div>
+                <span style="font-weight: 600;">📁 Файл:</span>
+                <span style="margin-left: 10px; color: #64748b;">
+                    logs/blog.log
+                </span>
+            </div>
+            <div>
+                <a href="{{ url_for('admin.admin_dashboard') }}" style="color: #2563eb; text-decoration: none;">
+                    ← Назад в админку
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Фильтрация логов по уровню
+        function filterLogs(level) {
+            const entries = document.querySelectorAll('.log-entry');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Обновляем активную кнопку
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.opacity = '0.6';
+            });
+            const activeBtn = document.querySelector(`.filter-btn[data-filter="${level}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.opacity = '1';
+            }
+            
+            // Фильтруем записи
+            entries.forEach(entry => {
+                const text = entry.textContent;
+                if (level === 'all') {
+                    entry.style.display = 'flex';
+                } else if (text.includes(level)) {
+                    entry.style.display = 'flex';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+        
+        // Переключение отображения лога (развернуть/свернуть)
+        function toggleLog(element) {
+            const btn = element.parentElement.querySelector('.toggle-btn');
+            if (element.style.maxHeight === 'none' || element.style.maxHeight === '') {
+                element.style.maxHeight = '60px';
+                if (btn) btn.textContent = 'Показать всё ▾';
+            } else {
+                element.style.maxHeight = 'none';
+                if (btn) btn.textContent = 'Свернуть ▴';
+            }
+        }
+        
+        // Очистка логов
+        function clearLogs() {
+            if (confirm('Вы уверены, что хотите очистить файл логов?')) {
+                fetch('/admin/logs/clear', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Логи очищены');
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка при очистке логов');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка при очистке логов');
+                });
+            }
+        }
+        
+        // Автообновление каждые 30 секунд
+        setInterval(function() {
+            window.location.reload();
+        }, 30000);
+        
+        // Применяем стили для уровней логов
+        document.addEventListener('DOMContentLoaded', function() {
+            const entries = document.querySelectorAll('.log-entry');
+            entries.forEach(entry => {
+                const text = entry.textContent;
+                const levelIndicator = entry.querySelector('.log-level');
+                
+                if (text.includes('ERROR')) {
+                    levelIndicator.style.background = '#ef4444';
+                    levelIndicator.style.boxShadow = '0 0 8px #ef4444';
+                } else if (text.includes('WARNING')) {
+                    levelIndicator.style.background = '#eab308';
+                    levelIndicator.style.boxShadow = '0 0 8px #eab308';
+                } else if (text.includes('INFO')) {
+                    levelIndicator.style.background = '#22c55e';
+                    levelIndicator.style.boxShadow = '0 0 8px #22c55e';
+                } else if (text.includes('DEBUG')) {
+                    levelIndicator.style.background = '#8b5cf6';
+                    levelIndicator.style.boxShadow = '0 0 8px #8b5cf6';
+                } else {
+                    levelIndicator.style.background = '#64748b';
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .filter-btn.active {
+            opacity: 1 !important;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+        }
+        .filter-btn:hover {
+            opacity: 0.8 !important;
+            transform: scale(1.05);
+        }
+        
+        /* Скроллбар */
+        #logs-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #logs-container::-webkit-scrollbar-track {
+            background: #0f172a;
+            border-radius: 4px;
+        }
+        #logs-container::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        #logs-container::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        /* Анимация при наведении */
+        .log-text:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        /* Кнопка показать всё */
+        .toggle-btn {
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+    </style>
+{% endblock %}

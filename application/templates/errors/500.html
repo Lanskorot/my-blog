@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Ошибка сервера
+{% endblock %}
+
+{% block body %}
+    <div class="error">
+        <!-- Иконка -->
+        <div class="error-icon">💥</div>
+        
+        <!-- Заголовок -->
+        <h1>500</h1>
+        <h2>Внутренняя ошибка сервера</h2>
+        
+        <!-- Сообщение -->
+        <p class="error-message">Упс! Что-то пошло не так на нашей стороне.</p>
+        <p class="error-message">Мы уже работаем над устранением проблемы.</p>
+        <p class="error-message">Пожалуйста, попробуйте обновить страницу или зайдите позже.</p>
+        
+        <!-- Кнопки действий -->
+        <div class="error-actions">
+            <a href="{{ url_for('main.index') }}" class="btn-primary">🏠 На главную</a>
+            <button onclick="location.reload()" class="btn-secondary">🔄 Обновить</button>
+        </div>
+        
+        <!-- Ссылка на поддержку -->
+        <p style="margin-top: 30px; font-size: 0.95rem; color: #94a3b8;">
+            Если проблема повторяется, свяжитесь с нами: 
+            <a href="mailto:support@example.com" style="color: #2563eb; text-decoration: none;">
+                support@example.com
+            </a>
+        </p>
+    </div>
+{% endblock %}

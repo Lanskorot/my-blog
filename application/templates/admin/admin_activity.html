@@ -1,0 +1,152 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+    Активность пользователей
+{% endblock %}
+
+{% block body %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <h1>📊 Активность пользователей</h1>
+    
+    <!-- Общая статистика -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center;">
+            <h3>👥 Всего</h3>
+            <p style="font-size: 2.5rem; font-weight: bold; color: #2563eb;">{{ total_users }}</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center;">
+            <h3>✅ Активных</h3>
+            <p style="font-size: 2.5rem; font-weight: bold; color: #22c55e;">{{ active_users_count }}</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center;">
+            <h3>📝 С постами</h3>
+            <p style="font-size: 2.5rem; font-weight: bold; color: #eab308;">{{ users_with_posts_count }}</p>
+        </div>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center;">
+            <h3>🚫 Без постов</h3>
+            <p style="font-size: 2.5rem; font-weight: bold; color: #ef4444;">{{ users_without_posts|length }}</p>
+        </div>
+    </div>
+    
+    <!-- График регистраций -->
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+        <h2>📈 Регистрации по дням (последние 30 дней)</h2>
+        {% if registrations %}
+            <div style="display: flex; align-items: flex-end; gap: 4px; height: 200px; padding: 10px 0; overflow-x: auto;">
+                {% set max_count = registrations|map(attribute=1)|max or 1 %}
+                {% for day, count in registrations %}
+                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 30px;">
+                        <div style="
+                            width: 100%;
+                            max-width: 40px;
+                            height: {{ (count / max_count * 180)|round|int }}px;
+                            background: {% if count > 0 %}#2563eb{% else %}#e2e8f0{% endif %};
+                            border-radius: 4px 4px 0 0;
+                            transition: height 0.3s ease;
+                            position: relative;
+                        " onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                            <span style="
+                                position: absolute;
+                                top: -20px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                font-size: 0.7rem;
+                                color: #475569;
+                                display: none;
+                            " class="tooltip">{{ count }}</span>
+                        </div>
+                        <span style="font-size: 0.6rem; color: #64748b; margin-top: 4px; text-align: center;">
+                            {{ day.split('-')[2] }}/{{ day.split('-')[1] }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Нет данных о регистрациях</p>
+        {% endif %}
+    </div>
+    
+    <!-- Пользователи, которые никогда не заходили -->
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+        <h2>🚫 Пользователи, которые никогда не заходили</h2>
+        {% if never_logged_in %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="padding: 10px; text-align: left;">ID</th>
+                            <th style="padding: 10px; text-align: left;">Имя</th>
+                            <th style="padding: 10px; text-align: left;">Email</th>
+                            <th style="padding: 10px; text-align: left;">Дата регистрации</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in never_logged_in %}
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 8px;">{{ user[0] }}</td>
+                                <td style="padding: 8px;">{{ user[1] }}</td>
+                                <td style="padding: 8px;">{{ user[2] }}</td>
+                                <td style="padding: 8px;">{{ user[3] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p style="color: #22c55e;">✅ Все пользователи хотя бы раз заходили!</p>
+        {% endif %}
+    </div>
+    
+    <!-- Пользователи без постов -->
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+        <h2>📝 Пользователи без постов</h2>
+        {% if users_without_posts %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="padding: 10px; text-align: left;">ID</th>
+                            <th style="padding: 10px; text-align: left;">Имя</th>
+                            <th style="padding: 10px; text-align: left;">Email</th>
+                            <th style="padding: 10px; text-align: left;">Дата регистрации</th>
+                            <th style="padding: 10px; text-align: left;">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users_without_posts %}
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 8px;">{{ user[0] }}</td>
+                                <td style="padding: 8px;">{{ user[1] }}</td>
+                                <td style="padding: 8px;">{{ user[2] }}</td>
+                                <td style="padding: 8px;">{{ user[3] }}</td>
+                                <td style="padding: 8px;">
+                                    <a href="{{ url_for('admin.admin_edit_user', user_id=user[0]) }}" 
+                                       style="color: #2563eb; text-decoration: none;">✏️ Редактировать</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p style="color: #22c55e;">✅ Все пользователи имеют хотя бы один пост!</p>
+        {% endif %}
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('admin.admin_dashboard') }}" style="color: #2563eb; text-decoration: none;">← Назад в админку</a>
+    </div>
+</div>
+
+<script>
+    // Показываем подсказки при наведении на столбцы графика
+    document.querySelectorAll('.graph-column').forEach(col => {
+        col.addEventListener('mouseenter', function() {
+            this.querySelector('.tooltip').style.display = 'block';
+        });
+        col.addEventListener('mouseleave', function() {
+            this.querySelector('.tooltip').style.display = 'none';
+        });
+    });
+</script>
+{% endblock %}

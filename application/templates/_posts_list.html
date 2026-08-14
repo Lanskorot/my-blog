@@ -1,0 +1,26 @@
+<!-- application/templates/_posts_list.html -->
+{% if posts %}
+    <ul class='posts'>
+        {% for post in posts %}
+            <li class="post-item">
+                <div class="post-header">
+                    <a href="{{ url_for('post.show_post', post_id=post[0]) }}">{{ post[1] }}</a>
+                </div>
+                
+                <div class="post-preview">
+                    <p>{{ post[2][:200] }}{% if post[2]|length > 200 %}...{% endif %}</p>
+                </div>
+                
+                <div class="post-meta">
+                    <span>✍️ Автор: <strong>{{ post[5] if post[5] else 'Неизвестно' }}</strong></span>
+                    <span>📂 Категории: <strong>{{ post[6] if post[6] else 'без категорий' }}</strong></span>
+                    <span>📅 Создан: <strong>{{ post[4]|datetime if post[4] else 'Неизвестно' }}</strong></span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="empty-state">
+        <p>📭 Постов пока нет</p>
+    </div>
+{% endif %}

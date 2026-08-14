@@ -1,0 +1,52 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+    Редактирование поьзователя 
+{% endblock %}
+
+{% block body %}
+    <h1>Редактирование поьзователя</h1>
+
+    {% if error %}
+        <h2 style="color: red">{{ error }}</h2>  
+    {% endif %}
+
+    <form action="/admin/users/edit/{{user[0]}}" method='POST' class="edit-post-form">
+        <div class="form-group">
+            <label for="name" class="required">Имя</label>
+            <input type="text" id="name" name="name" value="{{ user[1] }}" required class="form-control">
+            <span class="help-text">Введите имя пользователя</span>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <input type="email" id="email" name="email" value="{{ user[2] }}" required class="form-control">
+            <span class="help-text">Введите email пользователя</span>
+        </div>
+
+        
+        <div class="form-group">
+            <label for="role" class="required">Роль</label>
+            <select name="role" id="role" required class="form-control">
+                <option value="user" {% if user[5] == 'user' %}selected{% endif %}>Пользователь</option>
+                <option value="admin" {% if user[5] == 'admin' %}selected{% endif %}>Администратор</option>
+            </select>
+            <span class="help-text">Выберите роль ползователя</span>
+        </div>
+        
+
+        
+        <div class="form-actions">
+            <button type='submit' class="btn-save">Сохранить изменения</button>
+            <a href="{{ url_for('admin.admin_posts') }}" class="btn-cancel"><button type="button">Отмена</button></a>
+        </div>
+    </form>
+    
+    <div class="post-info">
+        <p><strong>Информация о пользователе</strong></p>
+        <ul>
+            <li><strong>ID:</strong> {{user[0]}}</li>
+            <li><strong>Текущая роль:</strong> {{ user[4] }}</li>
+        </ul>
+    </div>
+{% endblock %}

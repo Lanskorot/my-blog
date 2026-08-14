@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block admin %}
+    {% if admin %}
+        <li><a href="{{ url_for('admin.admin_dashboard') }}">🛠️ Админка</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block search %}
+    <div class="search-form">
+        <form action="{{ url_for('post.search') }}" method="GET">
+            <input type="text" name='q' placeholder='🔍 Поиск постов' value="{{ search_query if search_query else '' }}">
+            <button type='submit'>Найти</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <aside class="sidebar">
+        <div class="filter-section">
+            <h3>🔍 Фильтры</h3>
+            
+            <!-- Фильтр по категориям -->
+            <div class="filter-group">
+                <h4>📂 Категории</h4>
+                <ul class="filter-list">
+                    <li>
+                        <a href="{{ url_for('main.index') }}" class="filter-link {% if not selected_category %}active{% endif %}">
+                            Все категории
+                        </a>
+                    </li>
+                    {% for category in categories %}
+                        <li>
+                            <a href="{{ url_for('main.index', category=category[0]) }}" 
+                               class="filter-link {% if selected_category == category[0] %}active{% endif %}">
+                                {{ category[1] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Фильтр по авторам -->
+            <div class="filter-group">
+                <h4>👤 Авторы</h4>
+                <ul class="filter-list">
+                    <li>
+                        <a href="{{ url_for('main.index') }}" class="filter-link {% if not selected_author %}active{% endif %}">
+                            Все авторы
+                        </a>
+                    </li>
+                    {% for author in authors %}
+                        <li>
+                            <a href="{{ url_for('main.index', author=author[0]) }}" 
+                               class="filter-link {% if selected_author == author[0] %}active{% endif %}">
+                                {{ author[1] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Фильтр по дате -->
+            <div class="filter-group">
+                <h4>📅 Дата</h4>
+                <div class="date-filters">
+                    <a href="{{ url_for('main.index') }}" class="filter-link {% if not date_filter %}active{% endif %}">
+                        За всё время
+                    </a>
+                    <a href="{{ url_for('main.index', date='today') }}" 
+                       class="filter-link {% if date_filter == 'today' %}active{% endif %}">
+                        Сегодня
+                    </a>
+                    <a href="{{ url_for('main.index', date='week') }}" 
+                       class="filter-link {% if date_filter == 'week' %}active{% endif %}">
+                        За неделю
+                    </a>
+                    <a href="{{ url_for('main.index', date='month') }}" 
+                       class="filter-link {% if date_filter == 'month' %}active{% endif %}">
+                        За месяц
+                    </a>
+                </div>
+                
+                <!-- Свой диапазон дат -->
+                <div class="custom-date">
+                    <form action="{{ url_for('main.index') }}" method="GET">
+                        <label for="date_from">С:</label>
+                        <input type="date" id="date_from" name="date_from" class="date-input" value="{{ date_from or '' }}">
+                        <label for="date_to">По:</label>
+                        <input type="date" id="date_to" name="date_to" class="date-input" value="{{ date_to or '' }}">
+                        <button type="submit" class="apply-date-btn">Применить</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Кнопка сброса фильтров -->
+            <div class="filter-actions">
+                <a href="{{ url_for('main.index') }}" class="reset-filters-btn">🔄 Сбросить все фильтры</a>
+            </div>
+        </div>
+    </aside>
+{% endblock %}
+
+{% block body %}
+    <h1>📝 Главная</h1>
+
+    <!-- Авторизация -->
+    {% if user_name %}
+        <div class="auth-section">
+            <p>👋 Вы вошли как: <strong>{{ user_name }}</strong> 
+                <span>последний вход: {{ last_login|datetime if last_login else 'неизвестно' }}</span>
+            </p>
+            <a href="{{ url_for('auth.logout') }}"><button>🚪 Выйти</button></a>
+            <a href="{{ url_for('post.add_post') }}"><button>➕ Новый пост</button></a>
+        </div>
+    {% endif %}
+
+    <!-- Пользователи -->
+    <h3>👥 Пользователи</h3>
+    <div class="users-section">
+        {% if users %}
+            <ul class='users-list'>
+                {% for user in users %}
+                    <li>
+                        <a href="{{ url_for('main.user_page', user_id=user[0]) }}">
+                            {{ user[1] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="empty-state">
+                <p>👤 Пользователей пока нет</p>
+                <a href="{{ url_for('auth.register') }}">Зарегистрируйтесь первым</a>
+            </div>
+        {% endif %}
+        
+        <!-- Категории -->
+        <div class="users-section">
+            <h3>📂 Категории</h3>
+            <ul class="users-list">
+                {% for cat in cat_count %}
+                    <li>
+                        <a href="{{ url_for('post.category_posts', category_id=cat[1]) }}">
+                            {{ cat[0] }}
+                            <span class="badge">{{ cat[2] }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Посты -->
+    {% if posts %}
+        <div id="posts-container">
+            {% include '_posts_list.html' %}
+        </div>
+        
+        <!-- Пагинация -->
+        {% if total_pages > 1 %}
+            <div id="pagination">
+                <div class="pagination">
+                    {% if current_page > 1 %}
+                        <a href="{{ url_for('main.index', page=current_page - 1) }}">⬅ Предыдущая</a>
+                    {% endif %}
+                    
+                    <span>Страница {{ current_page }} из {{ total_pages }}</span>
+                    
+                    {% if current_page < total_pages %}
+                        <a href="{{ url_for('main.index', page=current_page + 1) }}">Следующая ➡</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <p>📭 Постов пока нет</p>
+            {% if user_name %}
+                <a href="{{ url_for('post.add_post') }}" class="btn-primary" style="display: inline-block; margin-top: 10px; text-decoration: none;">
+                    ➕ Создать первый пост
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,1614 @@
+/* ===== ОСНОВНЫЕ СТИЛИ ДЛЯ АДМИНКИ ===== */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --light-bg: #ecf0f1;
+    --dark-text: #2c3e50;
+    --light-text: #ecf0f1;
+    --border-color: #bdc3c7;
+    --shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #f5f6fa;
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+/* ===== ШАПКА ===== */
+header {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 1rem 0;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header ul {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+header ul li a {
+    color: var(--light-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+header ul li a:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Кнопка выхода */
+header ul li:last-child a {
+    color: var(--danger-color);
+    background-color: rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--danger-color);
+}
+
+header ul li:last-child a:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+main, div:not(.stats-grid) {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* ===== ЗАГОЛОВКИ ===== */
+h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 300;
+    border-bottom: 3px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin: 2rem 0 1rem;
+    font-weight: 400;
+}
+
+/* ===== СТАТИСТИКА ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.stat-card h3 {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--accent-color);
+}
+
+/* Альтернативный вид для списка статистики */
+ul:not(header ul) {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    list-style: none;
+}
+
+ul:not(header ul) li {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+ul:not(header ul) li:last-child {
+    border-bottom: none;
+}
+
+ul:not(header ul) li strong {
+    color: var(--primary-color);
+    min-width: 120px;
+}
+
+/* ===== ПОСЛЕДНИЕ ДЕЙСТВИЯ ===== */
+ul li em {
+    color: var(--secondary-color);
+    font-style: italic;
+    margin-left: auto;
+}
+
+/* Стили для разных типов уведомлений */
+ul li .notification-info {
+    color: var(--accent-color);
+}
+
+ul li .notification-success {
+    color: var(--success-color);
+}
+
+ul li .notification-warning {
+    color: var(--warning-color);
+}
+
+ul li .notification-error {
+    color: var(--danger-color);
+}
+
+/* ===== ТАБЛИЦЫ ===== */
+table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: var(--light-bg);
+}
+
+/* ===== КНОПКИ ===== */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-small {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* ===== ФОРМЫ ===== */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* ===== ПАГИНАЦИЯ ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+}
+
+.page-link {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover,
+.page-link.active {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+    header ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ РЕДАКТИРОВАНИЯ ПОСТА ===== */
+
+/* Основной контейнер страницы */
+body {
+    background-color: #f5f7fa;
+}
+
+/* Заголовок страницы */
+h1 {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    text-align: center;
+    margin: 2rem auto 1.5rem; /* Изменено: auto по бокам */
+    position: relative;
+    padding-bottom: 1rem;
+    width: fit-content; /* Ширина по содержимому */
+    max-width: 90%; /* Ограничение ширины */
+    display: block; /* Убеждаемся, что это блочный элемент */
+}
+
+
+
+/* Специфичные стили для формы редактирования */
+.edit-post-form {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Группы полей формы */
+.form-group {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+/* Улучшенные стили для полей ввода */
+.form-control {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Стили для поля заголовка */
+#title.form-control {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Стили для поля содержания */
+#content.form-control {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.8;
+    resize: vertical;
+    min-height: 300px;
+}
+
+/* Стили для выпадающего списка категорий */
+#category.form-control {
+    background-color: #f8fafc;
+    font-weight: 500;
+}
+
+/* Контейнер для кнопок */
+.form-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed var(--light-bg);
+    justify-content: center;
+}
+
+/* Кнопка сохранения */
+.btn-save {
+    background: linear-gradient(135deg, var(--success-color), #27ae60);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 250px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    height: fit-content; /* Адаптивная высота */
+    min-height: 60px; /* Минимальная высота для выравнивания */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2; /* Контроль межстрочного интервала */
+    white-space: nowrap; /* Запрет переноса текста */
+}
+
+.btn-save::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-save:hover {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+}
+
+.btn-save:hover::before {
+    left: 100%;
+}
+
+.btn-save:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+}
+
+/* Кнопка отмены */
+.btn-cancel {
+    flex: 1;
+    max-width: 250px;
+    text-decoration: none;
+    display: flex; /* Добавлено для правильного растягивания */
+    height: auto; /* Изменено с 100% на auto */
+}
+
+.btn-cancel button {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+    height: fit-content; /* Адаптивная высота */
+    min-height: 60px; /* Минимальная высота для выравнивания */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2; /* Контроль межстрочного интервала */
+    white-space: nowrap; /* Запрет переноса текста */
+}
+
+.btn-cancel button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-cancel button:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+}
+
+.btn-cancel button:hover::before {
+    left: 100%;
+}
+
+.btn-cancel button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+}
+
+/* Информационный блок о посте */
+.post-info {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    margin: 2rem auto;
+    border: 1px solid rgba(52, 152, 219, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.post-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--success-color), var(--warning-color), var(--danger-color));
+}
+
+.post-info p {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--light-bg);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-info p::before {
+    content: '📋';
+    font-size: 1.5rem;
+}
+
+.post-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+}
+
+.post-info ul li {
+    padding: 1.2rem;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-radius: 12px;
+    color: var(--dark-text);
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.post-info ul li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+
+.post-info ul li strong {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.post-info ul li span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+/* Специфичные стили для каждого поля информации */
+.post-info ul li {
+    background: linear-gradient(135deg, #e8f0fe, #ffffff);
+    border-left: 4px solid var(--accent-color);
+}
+
+
+/* Индикатор обязательных полей */
+.form-group label.required::after {
+    content: " *";
+    color: var(--danger-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Подсказки для полей */
+.help-text {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    padding-left: 0.5rem;
+    border-left: 2px solid var(--accent-color);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.form-group:hover .help-text {
+    opacity: 1;
+}
+
+/* Стили для выбранного option в select */
+#category.form-control option:checked {
+    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    color: white;
+    font-weight: 600;
+}
+
+/* Анимация для полей при фокусе */
+.form-control:focus {
+    transform: scale(1.02);
+    background: white;
+}
+
+/* Стили для неактивных полей (если нужно будет добавить readonly) */
+.form-control[readonly] {
+    background-color: #f0f3f6;
+    border-color: #d0d7de;
+    color: #4a5568;
+    cursor: not-allowed;
+}
+
+/* Индикатор загрузки (можно добавить позже для AJAX) */
+.loading-indicator {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--light-bg);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+
+/* ===== КНОПКА ПОДРОБНОЙ ИНФОРМАЦИИ ===== */
+.btn-info {
+    display: inline-block;
+    background-color: #4a5568;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    border: none;
+    margin: 0.2rem 0.1rem;
+    cursor: pointer;
+}
+
+.btn-info:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-info:active {
+    transform: translateY(0);
+}
+
+
+/* ===== ПУСТЫЕ СОСТОЯНИЯ ===== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.empty-state .icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+
+/* ===== СТАТУСЫ В ТАБЛИЦАХ ===== */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.admin {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-badge.user {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+
+
+/* ===== МОБИЛЬНОЕ МЕНЮ ===== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    header ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 1rem 0;
+    }
+    
+    header ul.open {
+        display: flex;
+    }
+    
+    header ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    header ul li a {
+        display: block;
+        padding: 0.8rem;
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card p {
+        font-size: 2rem;
+    }
+    
+    .btn-save,
+    .btn-cancel {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .post-info ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.error-message {
+    color: #dc2626;
+    font-size: 0.9rem;
+    display: block;
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
+
+input.error {
+    border-color: #dc2626;
+}
+
+input.error:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+
+/* ============================================
+   ХЕДЕР АДМИНКИ
+   ============================================ */
+header {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 0;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.8rem 0;
+    margin: 0;
+}
+
+header ul li a {
+    color: var(--light-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 0.8rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+header ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+header ul li:last-child a {
+    color: var(--danger-color);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+
+header ul li:last-child a:hover {
+    background: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+}
+
+.user-info {
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   ГАМБУРГЕР-МЕНЮ
+   ============================================ */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    padding: 8px 4px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ============================================
+   FLASH-СООБЩЕНИЯ
+   ============================================ */
+.flash-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.flash {
+    margin: 10px 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.flash.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+.flash.info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+/* ============================================
+   ПОДВАЛ
+   ============================================ */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 40px;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    header ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 0 1rem 0;
+        gap: 0.3rem;
+    }
+    
+    header ul.open {
+        display: flex;
+    }
+    
+    header ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    header ul li a {
+        display: block;
+        padding: 0.6rem;
+    }
+    
+    .user-info {
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    .flash-container {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 1rem;
+    }
+    
+    header ul li a {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+}
+
+
+/* ============================================
+   ТАБЛИЦА ПОЛЬЗОВАТЕЛЕЙ
+   ============================================ */
+.admin-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-collapse: collapse;
+}
+
+.admin-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.admin-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: var(--light-bg);
+}
+
+/* ============================================
+   СТАТУСЫ РОЛЕЙ
+   ============================================ */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.admin {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-badge.user {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+/* ============================================
+   ДЕЙСТВИЯ В ТАБЛИЦЕ
+   ============================================ */
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #eab308;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+    background: #ca8a04;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #ef4444;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   ПАГИНАЦИЯ
+   ============================================ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.page-link {
+    padding: 8px 16px;
+    background: var(--light-bg);
+    color: var(--primary-color);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+.page-current {
+    padding: 8px 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* ============================================
+   ПУСТОЕ СОСТОЯНИЕ
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    color: #94a3b8;
+}
+
+/* ============================================
+   FLASH-СООБЩЕНИЯ
+   ============================================ */
+.flash {
+    margin: 10px 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.flash.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+.flash.info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+
+
+/* ============================================
+   ТАБЛИЦА ПОСТОВ
+   ============================================ */
+.admin-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-collapse: collapse;
+}
+
+.admin-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.admin-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: var(--light-bg);
+}
+
+/* ============================================
+   ДЕЙСТВИЯ В ТАБЛИЦЕ
+   ============================================ */
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #eab308;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+    background: #ca8a04;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #ef4444;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   ПАГИНАЦИЯ
+   ============================================ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.page-link {
+    padding: 8px 16px;
+    background: var(--light-bg);
+    color: var(--primary-color);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+.page-current {
+    padding: 8px 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* ============================================
+   ПУСТОЕ СОСТОЯНИЕ
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    color: #94a3b8;
+}
+
+/* ============================================
+   FLASH-СООБЩЕНИЯ
+   ============================================ */
+.flash {
+    margin: 10px 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.flash.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.flash.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+.flash.info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+
+/* ============================================
+   ДАШБОРД
+   ============================================ */
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+    font-size: 1.1rem;
+    color: #64748b;
+}
+
+/* ============================================
+   СТАТИСТИКА
+   ============================================ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card h3 {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+/* ============================================
+   ТАБЛИЦЫ
+   ============================================ */
+.admin-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border-collapse: collapse;
+    margin: 1rem 0 2rem;
+}
+
+.admin-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.admin-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover {
+    background-color: var(--light-bg);
+}
+
+/* ============================================
+   БЫСТРЫЕ ССЫЛКИ
+   ============================================ */
+.quick-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 1rem 0 2rem;
+}
+
+.quick-links .btn-primary {
+    padding: 0.8rem 2rem;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-block;
+}
+
+.quick-links .btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.quick-links .btn-secondary {
+    padding: 0.8rem 2rem;
+    background: #f1f5f9;
+    color: #1e293b;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+}
+
+.quick-links .btn-secondary:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   ПУСТОЕ СОСТОЯНИЕ
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin: 1rem 0 2rem;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card p {
+        font-size: 2rem;
+    }
+    
+    .quick-links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .quick-links .btn-primary,
+    .quick-links .btn-secondary {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.8rem;
+    }
+}
