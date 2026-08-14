@@ -290,7 +290,7 @@ def test_logout_without_token(client):
     response = client.post("/api/v1/logout")
     assert response.status_code == 401
     json_data = response.get_json()
-    assert json_data['error'] == 'Требуется аунтификация'
+    assert json_data['error'] == 'Требуется аутентификация'
 
 
 def test_me_success(client, test_user, auth_token):
@@ -309,7 +309,7 @@ def test_me_without_token(client):
     response = client.get("/api/v1/me")
     assert response.status_code == 401
     json_data = response.get_json()
-    assert json_data['error'] == 'Требуется аунтификация'
+    assert json_data['error'] == 'Требуется аутентификация'
 
 
 def test_create_post_success(client, test_user, auth_token, sample_category):
@@ -350,7 +350,7 @@ def test_create_post_without_auth(client):
     })
     assert response.status_code == 401
     json_data = response.get_json()
-    assert json_data['error'] == 'Требуется аунтификация'
+    assert json_data['error'] == 'Требуется аутентификация'
 
 
 def test_create_post_invalid_category(client, auth_token):
@@ -422,7 +422,7 @@ def test_update_post_without_auth(client, sample_post):
     })
     assert response.status_code == 401
     json_data = response.get_json()
-    assert json_data['error'] == 'Требуется аунтификация'
+    assert json_data['error'] == 'Требуется аутентификация'
 
 
 def test_delete_post_as_admin(client, test_admin, admin_token, sample_post):
@@ -441,7 +441,7 @@ def test_delete_post_as_user(client, test_user, auth_token, sample_post):
     response = client.delete(f"/api/v1/posts/{sample_post}",
         headers={'Authorization': f'Bearer {auth_token}'}
     )
-    assert response.status_code == 401
+    assert response.status_code == 403
     json_data = response.get_json()
     assert json_data['error'] == 'Недостаточно прав'
 
